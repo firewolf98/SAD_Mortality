@@ -46,6 +46,6 @@ barplot(deaths_ordered$Value,names.arg = deaths_ordered$Country, las=2, col=rain
 #Barplot esempio ( visualizzare le morti della colombia per anno (divisi per masure che sono 3 ))
 subset_Colombia <- subset(data_infant, data_infant["Country"]== "Colombia" & data_infant$Measure == "Deaths per 1 000 live births")
 deaths_Colombia <- aggregate(Value ~ Year, data = subset_Colombia, FUN = sum)
-#deaths_ordered <- deaths_Colombia[order(deaths_Colombia$Value),]
+deaths_ordered <- deaths_Colombia[order(deaths_Colombia$Value),]
 barplot(deaths_Colombia$Value,names.arg = deaths_Colombia$Year, las=2, col=rainbow(length(deaths_ordered$Value)),cex.names = 0.5,main="Barplot Deaths in Colombia")
 
