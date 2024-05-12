@@ -12,7 +12,7 @@ data_infant$Variable <- as.factor(data_infant$Variable)
 data_infant$Measure <- as.factor(data_infant$Measure)
 data_infant$Country <- as.factor(data_infant$Country)
 data_infant$Year <- as.factor(data_infant$Year)
-#Sara- Ho eliminato la colonna Flags in quanto non è rilevante ai fini dell'analisi statistica
+#Ho eliminato la colonna Flags in quanto non è rilevante ai fini dell'analisi statistica
 data_infant$Flags <- NULL
 
 summary(data_infant)
@@ -47,3 +47,4 @@ subset_Colombia <- subset(data_infant, data_infant["Country"]== "Colombia" & dat
 deaths_Colombia <- aggregate(Value ~ Year, data = subset_Colombia, FUN = sum)
 #deaths_ordered <- deaths_Colombia[order(deaths_Colombia$Value),]
 barplot(deaths_Colombia$Value,names.arg = deaths_Colombia$Year, las=2, col=rainbow(length(deaths_ordered$Value)),cex.names = 0.5,main="Barplot Deaths in Colombia")
+
