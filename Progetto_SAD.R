@@ -1,4 +1,5 @@
 library(dplyr)
+library(readxl)
 
 data <- read_xlsx("Mortality.xlsx")
 names(data)[names(data)=="Variable"] <- "Kind of death"
@@ -6,14 +7,6 @@ names(data)[names(data)=="Variable"] <- "Kind of death"
 summary(data)
 
 data_infant <- read_xlsx("Infant_Mortality.xlsx")
-
-#Ho trasformato la prime 4 variabili categoriche in fattori (Year non è una variabile numerica)
-data_infant$Variable <- as.factor(data_infant$Variable)
-data_infant$Measure <- as.factor(data_infant$Measure)
-data_infant$Country <- as.factor(data_infant$Country)
-data_infant$Year <- as.factor(data_infant$Year)
-#Ho eliminato la colonna Flags in quanto non è rilevante ai fini dell'analisi statistica
-data_infant$Flags <- NULL
 
 summary(data_infant)
 
@@ -311,4 +304,19 @@ subset_Russia <- subset(data_infant, data_infant["Country"]== "Russia" & data_in
 deaths_Russia <- aggregate(Value ~ Year, data = subset_Russia, FUN = sum)
 #deaths_ordered <- deaths_Colombia[order(deaths_Colombia$Value),]
 barplot(deaths_Russia$Value,names.arg = deaths_Russia$Year, las=2, col=rainbow(length(deaths_Russia$Value)),cex.names = 0.5,main="Barplot Deaths in Russia") 
+
+#Barplot per più morti per stato lungo tutto l'arco temporale di un tipo di morte, ossia Infant mortality, No minimum threshold... (2010-2022)
+subset_temp <- subset(data_infant, data_infant["Variable"]== "Infant mortality, No minimum threshold of gestation period or birthweight"  )
+deaths_total <- aggregate(Value ~ Country, data = subset_temp, FUN = sum)
+barplot(deaths_total$Value,names.arg = deaths_total$Country, las=2, col=rainbow(length(deaths_total$Value)),cex.names = 0.5,main="Barplot for countries with fixed death type  ") 
+
+#Barplot per più morti per stato lungo tutto l'arco temporale di un tipo di morte, ossia Infant mortality, No minimum threshold... (2019-2020)
+subset_temp <- subset(data_infant, data_infant["Variable"]== "Infant mortality, No minimum threshold of gestation period or birthweight" & (data_infant$Year == 2019 | data_infant$Year == 2020) )
+deaths_total <- aggregate(Value ~ Country, data = subset_temp, FUN = sum)
+barplot(deaths_total$Value,names.arg = deaths_total$Country, las=2, col=rainbow(length(deaths_total$Value)),cex.names = 0.5,main="Barplot for countries with fixed death type  ") 
+
+#Barplot per più morti per stato lungo tutto l'arco temporale di un tipo di morte, ossia Infant mortality, No minimum threshold... (tutti gli altri anni)
+subset_temp <- subset(data_infant, data_infant["Variable"]== "Infant mortality, No minimum threshold of gestation period or birthweight" & (data_infant$Year != 2019 | data_infant$Year != 2020) )
+deaths_total <- aggregate(Value ~ Country, data = subset_temp, FUN = sum)
+barplot(deaths_total$Value,names.arg = deaths_total$Country, las=2, col=rainbow(length(deaths_total$Value)),cex.names = 0.5,main="Barplot for countries with fixed death type  ") 
 
